@@ -6,6 +6,7 @@ import NotFound from "./NotFound"
 import Orders from "./Orders"
 import OrderDetails from "./OrderDetails"
 import Users from "./Users"
+import Categories from "./Categories"
 
 const App = () => {
  
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/orders" element={<Orders/>} />
           <Route path="/orders/:id" element={<OrderDetails/>} />
           <Route path="/users" element={<Users/>} />
+          <Route path="/categories" element={<Categories/>} />
         </Route>
         <Route path="*" element={<NotFound/>} />
       </Routes>

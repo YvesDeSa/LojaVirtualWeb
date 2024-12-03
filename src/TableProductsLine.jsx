@@ -1,20 +1,28 @@
-import { NumberFormatter, DateTimeFormatter, CurrencyFormatter, StringFormatter } from "./formatters"
+import React from "react";
 
+const TableProductsLine = ({ item, categories, handleDeleteProduct }) => {
+  console.log(categories)
+  console.log(item)
+  const categoryName =
+    categories.find((cat) => cat.id === item.categoria_id)?.nome || "Sem Categoria";
 
-const TableProductsLine = ({item , handleDeleteProduct}) => {
   return (
-        <tr>
-            <td>{NumberFormatter.format(item.id, 6)}</td>
-            <td>{item.nome}</td>
-            <td>{CurrencyFormatter.format(item.preco)}</td>
-            <td>{NumberFormatter.format(item.estoque, 6)}</td>
-            <td>
-            <button className="btn btn-outline-danger btn-sm" title="Deletar Produto" onClick={() => handleDeleteProduct(item.id)}>
-                <i className="bi bi-trash"></i>
-            </button>
-            </td>
-        </tr>
-  )
-}
+    <tr>
+      <td>{item.id}</td>
+      <td>{item.nome}</td>
+      <td>{item.preco}</td>
+      <td>{item.estoque}</td>
+      <td>{categoryName}</td>
+      <td>
+        <button
+          className="btn btn-outline-danger btn-sm"
+          onClick={() => handleDeleteProduct(item.id)}
+        >
+          Deletar
+        </button>
+      </td>
+    </tr>
+  );
+};
 
-export default TableProductsLine
+export default TableProductsLine;
