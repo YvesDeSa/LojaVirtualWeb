@@ -1,4 +1,4 @@
-const CategoryTable = ({ categories, setSelectedCategory, deleteCategory, loading }) => {
+const CategoryTable = ({ categories, setSelectedCategory, handleDeleteCategory, loading }) => {
     if (loading) {
       return <p>Carregando...</p>;
     }
@@ -30,7 +30,7 @@ const CategoryTable = ({ categories, setSelectedCategory, deleteCategory, loadin
                 </button>
                 <button
                   className="btn btn-outline-danger btn-sm"
-                  onClick={() => deleteCategory(category)}
+                  onClick={() => handleDeleteCategory(category)} 
                 >
                   Excluir
                 </button>

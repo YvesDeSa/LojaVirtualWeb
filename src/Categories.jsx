@@ -21,17 +21,15 @@ const Categories = () => {
   };
 
   const deleteCategory = (id) => {
-    api.post(`excluir_categoria/${id}`) // Envia o ID na URL
-      .then(() => loadCategories()) // Atualiza as categorias após excluir
+    api.post(`excluir_categoria/${id}`)
+      .then(() => loadCategories()) 
       .catch((error) => console.error("Erro ao excluir categoria:", error))
       .finally(() => {
-        setModalVisible(false); // Fecha o modal após a exclusão
-        setCategoryToDelete(null); // Limpa a categoria selecionada para exclusão
+        setModalVisible(false); 
+        setCategoryToDelete(null); 
       });
   };
   
-
-  // Salvar (adicionar ou editar) categoria
   const saveCategory = (category) => {
     const endpoint = category.id ? "editar_categoria" : "adicionar_categoria";
     api.post(endpoint, category)
@@ -39,13 +37,17 @@ const Categories = () => {
       .catch((error) => console.error("Erro ao salvar categoria:", error));
   };
 
-  // Excluir categoria
-  const handleDeleteCategory = () => {
-    if (categoryToDelete) {
-      deleteCategory(categoryToDelete.id); // Chama a função de exclusão com o ID
+  const handleDeleteCategory = (categoryId) => {
+    setCategoryToDelete(categoryId.id);
+    const modalElement = document.getElementById("modalDeleteCategory");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    } else {
+      console.error("Modal não encontrado no DOM.");
     }
   };
-
+  
   useEffect(() => {
     loadCategories();
   }, []);
@@ -53,34 +55,24 @@ const Categories = () => {
   return (
     <div className="container">
       <h1>Gerenciar Categorias</h1>
-      {/* Formulário para adicionar/editar categoria */}
       <CategoryForm
         saveCategory={saveCategory}
         selectedCategory={selectedCategory}
         clearSelection={() => setSelectedCategory(null)}
       />
-      {/* Tabela de categorias */}
       <CategoryTable
         categories={categories}
         setSelectedCategory={setSelectedCategory}
-        deleteCategory={(category) => {
-          setCategoryToDelete(category); // Define a categoria para exclusão
-          setModalVisible(true); // Mostra o modal de exclusão
-        }}
+        handleDeleteCategory={handleDeleteCategory}
         loading={loading}
       />
-      {/* Modal de confirmação para exclusão */}
-      {modalVisible && (
-        <ModalConfirm
-          modalId="modalDeleteCategory"
-          question={`Deseja realmente excluir a categoria "${categoryToDelete?.nome}"?`}
-          confirmAction={handleDeleteCategory} // Confirma exclusão
-          cancelAction={() => {
-            setModalVisible(false); // Fecha o modal sem excluir
-            setCategoryToDelete(null); // Limpa a categoria selecionada para exclusão
-          }}
-        />
-      )}
+      
+      <ModalConfirm
+        modalId="modalDeleteCategory"
+        question="Deseja realmente excluir a Categoria?"
+        confirmAction={() => deleteCategory(categoryToDelete)}
+      />
+
     </div>
   );
 };
